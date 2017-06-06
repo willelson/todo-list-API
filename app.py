@@ -85,6 +85,35 @@ def delete_task(task_id):
     return jsonify({'Deletion': 'succesful'}), 200
 
 
+@app.route('/task/<task_id>', methods=['PUT'])
+def update_task(task_id):
+	task = Task.query.get(task_id)
+
+	if task is None:
+		abort(404)
+
+	if not request.json:
+		abort(400)
+	if 'title' in request.json and type(request.json['title']) != unicode:
+		abort(400)
+	if 'description' in request.json and type(request.json['description']) is not unicode:
+		abort(400)
+	if 'done' in request.json and type(request.json['done']) is not bool:
+		abort(400)
+
+	if 'title' in request.json:
+		task.title = request.json['title']
+	if 'description' in request.json:
+		task.description = request.json['description']
+	if 'done' in request.json:
+		task.done = request.json['done']
+
+	db.session.add(task)
+	db.session.commit()
+
+	return jsonify(serialize(task))
+
+
 if __name__ == "__main__":
 	app.run(debug=True, port=5000)
 
