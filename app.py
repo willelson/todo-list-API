@@ -1,7 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import class_mapper
-import json
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -50,6 +49,28 @@ def task(task_id):
 	task = Task.query.get(task_id)
 	return jsonify(serialize(task))
 
+@app.route('/task', methods=["POST"])
+def create_task():
+	# If request not in json format or doesn't contain a title return a bad request error
+	if not request.json or not 'title' in request.json:
+		abort(400)
+
+	task = Task(title=request.json['title'])
+	if 'description' in request.json:
+		task.description = request.json['description']
+	if 'done' in request.json:
+		task.done = request.json['done']
+
+	db.session.add(task)
+	db.session.commit()
+
+	# respond to client with task added and code 201 which means Created
+	return jsonify(serialize(task)), 201
+
+@app.errorhandler(404)
+def not_found(error):
+	"""Return 404 error in JSON rather then HTML"""
+	return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == "__main__":
