@@ -110,7 +110,7 @@ def update_task(task_id):
 	db.session.add(task)
 	db.session.commit()
 
-	return jsonify(serialize(task))
+	return jsonify(serialize(task)), 200
 
 
 if __name__ == "__main__":
