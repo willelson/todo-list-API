@@ -1,7 +1,6 @@
 # Todo list API
 
-This project is 
-
+This project is a restful api built with [flask](http://flask.pocoo.org). It has create, update, delete functionality and implements a postgres database system.
 
 ### Install and run
 
@@ -25,7 +24,7 @@ python app.py
 ```
 You could check everything is working by making a call from the terminal to add a task
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{"title":"New task"}' http://127.0.0.:5000/task
+curl -i -H "Content-Type: application/json" -X POST -d '{"title":"New task"}' http://127.0.0.1:5000/task
 ```
 
 
