@@ -5,8 +5,7 @@ from sqlalchemy.orm import class_mapper
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/postgres'
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config.from_object('config.DevelopmentConfig')
 
 def serialize(model):
   """
