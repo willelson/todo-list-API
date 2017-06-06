@@ -32,10 +32,23 @@ class Task(db.Model):
 
 @app.route('/tasks', methods=["GET"])
 def tasks():
+	"""
+	Return all tasks
+	"""
 	# Serialize each task and return in JSON 
 	tasks = Task.query.all()
 	serialized_tasks = [serialize(task)for task in tasks]
 	return jsonify({"tasks":serialized_tasks})
+
+
+
+@app.route('/task/<task_id>', methods=["GET"])
+def task(task_id):
+	"""
+	Return a specific task
+	"""
+	task = Task.query.get(task_id)
+	return jsonify(serialize(task))
 
 
 
