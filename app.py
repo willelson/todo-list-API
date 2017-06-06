@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import class_mapper
 
@@ -67,10 +67,22 @@ def create_task():
 	# respond to client with task added and code 201 which means Created
 	return jsonify(serialize(task)), 201
 
+
 @app.errorhandler(404)
 def not_found(error):
 	"""Return 404 error in JSON rather then HTML"""
 	return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.route('/task/<task_id>', methods=["DELETE"])
+def delete_task(task_id):
+    task = Task.query.get(task_id)
+    if task is None:
+        abort(404)
+    db.session.delete(task)
+    db.session.commit()
+
+    return jsonify({'Deletion': 'succesful'}), 200
 
 
 if __name__ == "__main__":
