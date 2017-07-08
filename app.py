@@ -116,14 +116,3 @@ def update_task(task_id):
 if __name__ == "__main__":
 	app.run(port=5000)
 
-
-
-
-
-
-
-
-
-"""
-http://stackoverflow.com/questions/14920080/how-to-create-sqlalchemy-to-json
-"""
